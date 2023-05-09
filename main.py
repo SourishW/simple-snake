@@ -5,6 +5,7 @@ DOWN = 1
 LEFT = 2
 RIGHT = 3
 
+
 names = ["UP", "DOWN", "LEFT", "RIGHT"]
 
 def initialize():

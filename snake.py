@@ -4,9 +4,9 @@ import random
 def update_location(node, direction):
     node_copy = node.copy()
     if (direction == UP):
-        node_copy[1]+=1
-    if (direction == DOWN):
         node_copy[1]-=1
+    if (direction == DOWN):
+        node_copy[1]+=1
     if (direction == LEFT):
         node_copy[0]-=1
     if (direction == RIGHT):
@@ -26,7 +26,7 @@ class Snake:
         if ([self.direction, direction] not in [[UP, DOWN], [DOWN, UP], [LEFT, RIGHT], [RIGHT, LEFT]]):
             self.direction = direction
 
-    def grow_one(self):
+    def grow(self):
         self.grow = True
 
 
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     while(not snake.game_over()):
         print (str(snake))
         if (random.randint(0, 2)==1):
-            snake.grow_one()
+            snake.grow()
         snake.set_direction(random.randint(0, 3))
         snake.move()
     print (str(snake))
