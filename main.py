@@ -1,20 +1,12 @@
-from board import *
+from board import SnakeBoard
 
-UP = 0
-DOWN = 1
-LEFT = 2
-RIGHT = 3
-
-
-names = ["UP", "DOWN", "LEFT", "RIGHT"]
-
-def initialize():
-    pygame.init()
-    screen = pygame.display.set_mode(1280, 720)
-    clock = pygame.time.Clock()
-
-
-if __name__ == "__main__":
-    board = SnakeBoard(1280, 720)
+def game_loop():
+    board = SnakeBoard(35, 30)
     board.initialize()
-    board.test()
+    # while(board.handle_input()):
+    while (board.handle_input()):
+        board.update_snake()
+        board.draw()
+    
+if __name__ == "__main__":
+    game_loop()
