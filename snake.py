@@ -36,6 +36,15 @@ class Snake:
     def grow_one(self):
         self.grow = True
 
+    def get_head(self):
+        return self.nodes[0]
+    
+    def vet_food(self, food):
+        for node in self.nodes:
+            if node == food:
+                return False
+        return True
+            
 
     def move(self):
         # everything moves up one spot, the last node gets deleted, and the new location is updated
@@ -50,7 +59,7 @@ class Snake:
 
         # check self collision
         for node in self.nodes[1:]:
-            if head[0] == node[0] and head[1] == node[1]:
+            if head == node:
                 return True
             
         # check boundary collision

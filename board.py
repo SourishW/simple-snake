@@ -1,6 +1,7 @@
 import pygame
 from pygame import Rect
 from snake import Snake
+import random 
 import math
 
 UP = 0
@@ -12,8 +13,8 @@ GREEN = 0
 BLACK = 1
 YELLOW = 2
 
-PPBLOCK = 10
-FPS = 10
+PPBLOCK = 15
+FPS = 15
 
 def flatten_coor(xytuple, width, height):
     x = xytuple[0]
@@ -28,6 +29,7 @@ class SnakeBoard:
         self.width = width
         self.height = height
         self.snake = Snake(width, height)
+        self.food = [random.randint(0, self.width), random.randint(0, self.height)]
     
     def initialize(self):
         pygame.init()
@@ -39,12 +41,7 @@ class SnakeBoard:
         cells = dict()
         for node in snake.nodes:
             cells[flatten_coor(node, self.width, self.height)] = GREEN
-        # for x in range(self.width):
-        #     for y in range(self.height):
-        #         bg = [x, y]
-        #         bg = flatten_coor(bg, self.width, self.height)
-        #         if bg not in cells.keys():
-        #             cells[bg] = BLACK
+        cells[flatten_coor(self.food, self.width, self.height)] = YELLOW
         return cells
     
     def draw(self):
@@ -52,7 +49,7 @@ class SnakeBoard:
         pixel_map = self.create_cell_map()
         for coordinates, color in pixel_map.items():
             coordinates = split_coor(coordinates, self.width, self.height)
-            rect_color = "black" if color == BLACK else "green"
+            rect_color = "yellow" if color == YELLOW else "green"
             square = Rect(coordinates[0]*PPBLOCK, coordinates[1]*PPBLOCK, PPBLOCK, PPBLOCK)
             pygame.draw.rect(self.screen, color=rect_color, rect = square)
         pygame.display.flip()
@@ -75,10 +72,34 @@ class SnakeBoard:
             self.snake.grow_one()
         return not self.snake.game_over()
     
+
+    def continue_playing(self):
+        self.generate_new_food()
+        while (True):
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return False
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_r]:
+                self.snake = Snake(self.width, self.height)
+                global FPS 
+                FPS = 15
+                return True
     
+    def generate_new_food(self):
+        coordinates = [random.randint(2, self.width-2), random.randint(2, self.height-2)]
+        while (not self.snake.vet_food(coordinates)):
+            coordinates = [random.randint(2, self.width-2), random.randint(2, self.height-2)]
+        self.food = coordinates
+
     
     def update_snake(self):
         self.snake.move()
+        if (self.snake.get_head() == self.food):
+            global FPS
+            FPS += 2
+            self.snake.grow_one()
+            self.generate_new_food()
     
 
 
