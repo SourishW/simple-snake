@@ -60,16 +60,14 @@ class SnakeBoard:
             if event.type == pygame.QUIT:
                 return False
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] or keys[pygame.K_UP]:
             self.snake.set_direction(UP)
-        if keys[pygame.K_s]:
+        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
             self.snake.set_direction(DOWN)
-        if keys[pygame.K_a]:
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
             self.snake.set_direction(LEFT)
-        if keys[pygame.K_d]:
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
             self.snake.set_direction(RIGHT)
-        if keys[pygame.K_SPACE] or keys[pygame.K_g]:
-            self.snake.grow_one()
         return not self.snake.game_over()
     
 
